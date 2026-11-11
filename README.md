@@ -54,6 +54,7 @@ Ink is each pixel's darkness from the background (0) to black (1), summed.
 !["Customer number:" at 12 px, magnified 8 times](comparison.png)
 
 "Customer number:" at 12 px, magnified 8 times. From the top: Win32, Chrome (1.0), SkiaSharp (0.5), Chrome forced to 0.5. Only the edge pixels differ, and SkiaSharp and Chrome at 0.5 are identical.
+
 "Customer number:" at other sizes, ink relative to Win32:
 
 | Size | SkiaSharp (0.5) | Chrome (1.0) |
@@ -94,6 +95,8 @@ At every line and size, SkiaSharp is identical pixel for pixel to Chrome and Edg
 This repository does all of this and measures it. It is an Avalonia app that draws the lines with GDI in a plain Win32 window, in Windows Forms labels and with Avalonia, opens them in Edge and Chrome at each contrast, captures every window, and writes the tables above. On Windows with the .NET 11 SDK:
 
 ```
+git clone https://github.com/lloydjatkinson/skiasharp-text-contrast-reproduction
+cd skiasharp-text-contrast-reproduction
 dotnet run -c Release --project TextContrast -- --measure results
 ```
 
