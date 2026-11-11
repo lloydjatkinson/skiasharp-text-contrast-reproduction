@@ -12,8 +12,15 @@ Chrome and Edge had exactly this problem, and fixed it:
 
 The fix was one define in Chromium's Skia build, `SK_GAMMA_CONTRAST=0.5` (Skia's default) to `1.0` ([commit c0742f5](https://github.com/chromium/chromium/commit/c0742f5eba9065435d55c6ef1f0693b11dca8963), [review](https://chromium-review.googlesource.com/c/chromium/src/+/6172587), [crbug 40037626](https://issues.chromium.org/issues/40037626)):
 
-- [Chrome blog](https://developer.chrome.com/blog/better-text-rendering-in-chromium-based-browsers-on-windows): users reported text as "washed out", and the value was chosen "after a lot of user research".
-- [Edge blog](https://blogs.windows.com/msedgedev/2025/01/30/better-text-contrast-for-all-chromium-based-browsers-on-windows/): "increasing the contrast value to 1.0 significantly enhances text visibility", "particularly in scenarios involving lighter-weight text and CJK languages".
+- [Chrome blog](https://developer.chrome.com/blog/better-text-rendering-in-chromium-based-browsers-on-windows) (12 February 2025):
+  - "many Edge users shared that text appeared 'washed out' and that it didn't look consistent with text in other parts of Windows."
+  - "Skia does not pick up text contrast and gamma values from the Windows ClearType Tuner."
+  - "After a lot of user research, members of both Edge and Chromium determined that a contrast value of 1.0 closely matched the text rendering of pre-Chromium Edge and looked consistent compared to other native Windows applications."
+  - "we shared our findings with the Chrome team at Google, who confirmed them with their own experiments."
+- [Edge blog](https://blogs.windows.com/msedgedev/2025/01/30/better-text-contrast-for-all-chromium-based-browsers-on-windows/) (30 January 2025):
+  - "This led to lighter text rendering in Chromium, especially noticeable in CJK characters."
+  - "The contrast ratio between the text and its background is therefore very important to ensure comfort and to reduce eye strain."
+  - "increasing the contrast value to 1.0 significantly enhances text visibility, particularly in scenarios involving lighter-weight text and CJK languages, which we heard a lot of feedback about."
 
 ### Proposal
 
@@ -91,3 +98,5 @@ dotnet run -c Release --project TextContrast -- --measure results
 ```
 
 `results/` holds the run behind the figures above.
+
+In Visual Studio, Run uses the Measure launch profile, which writes `results` next to `TextContrast.slnx`.

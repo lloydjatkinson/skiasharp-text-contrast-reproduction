@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "Measure": {
+      "commandName": "Project",
+      "commandLineArgs": "--measure"
+    },
+    "Windows only": {
+      "commandName": "Project"
+    }
+  }
+}
