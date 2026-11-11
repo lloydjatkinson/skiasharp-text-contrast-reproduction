@@ -112,6 +112,13 @@ namespace TextContrast
             start.ArgumentList.Add("--disable-extensions");
             start.ArgumentList.Add("--disable-backgrounding-occluded-windows");
             start.ArgumentList.Add("--disable-features=CalculateNativeWinOcclusion");
+            if (browser.Name == "Edge")
+            {
+                // A new Edge profile can open a prompt to sign in with the Windows account, which dims the page. InPrivate windows are
+                // not signed in.
+                start.ArgumentList.Add("--inprivate");
+            }
+
             start.ArgumentList.Add("--window-position=20,20");
             start.ArgumentList.Add("--window-size=480,700");
             if (contrast is not null)
@@ -187,6 +194,14 @@ namespace TextContrast
             var background = Background(image);
             var file = string.Concat(name.Where(char.IsLetterOrDigit).Select(char.ToLowerInvariant));
             Save(image, new Box(0, 0, image.Width, image.Height), 1, Path.Combine(output, $"{file}-window.png"));
+
+            // The page's colour is the most common one in the window. Anything else means that a prompt or another window dimmed or
+            // covered the page, and its text cannot be compared.
+            if (Math.Abs(background - Samples.Background) > 1)
+            {
+                return new Result(name, [], $"not measured: the page was dimmed or covered (see {file}-window.png)");
+            }
+
             var lines = new List<Line>();
             var boxes = FindLines(image, background);
             for (var i = 0; i < boxes.Count; i++)
@@ -439,7 +454,7 @@ namespace TextContrast
             {
                 var relative = Complete(result) && Complete(reference)
                     ? Enumerable.Range(0, Samples.DialogLines).Average(i => result.Lines[i].Ink / reference.Lines[i].Ink).ToString("P1", culture)
-                    : $"{result.Lines.Count} lines found";
+                    : result.Problem ?? $"{result.Lines.Count} lines found";
                 var same = Complete(result) && Complete(avalonia) ? $"{Enumerable.Range(0, Samples.Lines.Count).Count(i => Same(result.Lines[i], avalonia.Lines[i]))} of {Samples.Lines.Count}" : "–";
                 report.AppendLine(culture, $"| {result.Name} | {relative} | {same} |");
             }
@@ -500,7 +515,7 @@ namespace TextContrast
 
         private sealed record Line(int Size, int Width, int Height, double Ink, int Dark, int InkPixels, int Fringed, double Colour, int Strong, int Strongest, byte[] Pixels);
 
-        private sealed record Result(string Name, IReadOnlyList<Line> Lines);
+        private sealed record Result(string Name, IReadOnlyList<Line> Lines, string? Problem = null);
 
         private sealed record Image(int Width, int Height, byte[] Pixels);
     }

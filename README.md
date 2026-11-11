@@ -44,7 +44,7 @@ The text contrast is fixed when SkiaSharp is built, and `SKSurfaceProperties` do
 | Renderer | Ink, relative to Win32 |
 |---|---|
 | Win32 (GDI `TextOut`) | 100% |
-| Edge 157 (default, 1.0) | 99.8% |
+| Edge 157 (default, 1.0) | 99.7% |
 | Chrome 157 (default, 1.0) | 99.7% |
 | **SkiaSharp 3.119.4 (0.5)** | **89.8%** |
 | Chrome 157 forced back to 0.5 with `--text-contrast=0.5`, as before 132 | 89.8% |
@@ -66,7 +66,7 @@ Ink is each pixel's darkness from the background (0) to black (1), summed.
 | 20 px | 93.6% | 101.0% |
 | 28 px | 94.4% | 100.3% |
 
-At every line and size, SkiaSharp is identical pixel for pixel to Chrome with `--text-contrast=0.5`. The gap is largest on small text.
+At every line and size, SkiaSharp is identical pixel for pixel to Chrome and Edge with `--text-contrast=0.5`. The gap is largest on small text.
 
 ### Examples of projects that use 1.0 on Windows
 
